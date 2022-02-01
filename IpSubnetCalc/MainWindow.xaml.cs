@@ -73,7 +73,7 @@ namespace IpSubnetCalc
                 decAddr = decAddr.TrimEnd('.');
                 decAddr += "/"+item.Value;
                 decAddresses.Add(decAddr);
-               // MessageBox.Show(decAddr);
+                //MessageBox.Show(decAddr);
 
             }
             return decAddresses;
@@ -201,12 +201,14 @@ namespace IpSubnetCalc
             ReadInSubnets();
             SubnetsInTwoPower();
             ipAddress = ipAddressTextBox.Text;
-            /*
             foreach (var item in VLSM(ToBinAddress(ipAddress)))
             {
-                MessageBox.Show(item);
+                StackPanel row = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(4) };
+                row.Children.Add(new Label() { Content = item });
+                row.MouseLeftButtonDown += SelectRow;
+                outPutPanel.Children.Add(row);
             }
-            */
+            
         }
         private void RemoveSubnetBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -231,15 +233,6 @@ namespace IpSubnetCalc
             prefixLbl.Visibility = Visibility.Visible;
             netmaskPrefix.Visibility = Visibility.Visible;
         }
-        private void hostRadioBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            hostDock.Visibility = Visibility.Visible;
-            subnetDock.Visibility = Visibility.Hidden;
-        }
-        private void subRadioBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            hostDock.Visibility = Visibility.Hidden;
-            subnetDock.Visibility = Visibility.Visible;
-        }
+
     }
 }
