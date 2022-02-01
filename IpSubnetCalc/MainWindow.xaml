@@ -1,0 +1,63 @@
+﻿<Window x:Class="IpSubnetCalc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IpSubnetCalc"
+        mc:Ignorable="d"
+        Title="SubnetCalculator" Height="450" Width="800" Background="Gray" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100px"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Grid.Column="1"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="0,0,0,-29">
+            <DockPanel>
+                <Label Content="Ip address" />
+                <TextBox Width="200"  Name="ipAddressTextBox"/>
+                <Label Content="/" Visibility="Hidden" x:Name="prefixLbl"/>
+                <TextBox Width="40" Name="netmaskPrefix" Margin="-150,0,10,0" Visibility="Hidden"/>
+
+            </DockPanel>
+            <RadioButton Content="VLSM" Margin="10,0,208,0" Height="21" Name="vlsmRadioBtn" Checked="vlsmRadioBtn_Checked"/>
+            <RadioButton Content="Equal subnets" Margin="10,0,393,0" Height="21" Name="eqSubRadioBtn" Checked="eqSubRadioBtn_Checked"/>
+            <DockPanel HorizontalAlignment="Center" Margin="10,0,223,0" Width="262" Name="vlsmButtons" Visibility="Hidden">
+                <Button Content="Add subnet" FontSize="16" Width="114" Margin="5" x:Name="AddSubnetBtn" Click="AddSubnetBtn_Click" />
+                <Button Content="Remove subnet" FontSize="16" Width="127" Margin="5" x:Name="RemoveSubnetBtn" Click="RemoveSubnetBtn_Click" />
+            </DockPanel>
+            <Button Content="Calculate" FontSize="16" Margin="10,5,223,5" x:Name="CalculateBtn" Click="CalculateBtn_Click" />
+        </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Visibility="Hidden" Name="eqSubPanel">
+                <DockPanel x:Name="subnetDock">
+                    <Label Content="Number of subnets" Name="subLbl"/>
+                    <TextBox Width="200"  Name="numberOfSubnets"/>
+                </DockPanel>
+                <DockPanel x:Name="hostDock">
+                    <Label Content="Number of hosts" Name="hostLbl"/>
+                    <TextBox Width="200"  Name="numberOfHosts"/>
+                </DockPanel>
+            <RadioButton Content="Subnets" Name="subRadioBtn" Checked="subRadioBtn_Checked" IsChecked="True"/>
+            <RadioButton Content="Hosts" Name="hostRadioBtn" Checked="hostRadioBtn_Checked"/>
+        </StackPanel>
+
+        <StackPanel Name="SubnetStack" Grid.Column="0" Grid.Row="1" Margin="0,39,0,-237">
+        </StackPanel>
+
+    </Grid>
+</Window>
