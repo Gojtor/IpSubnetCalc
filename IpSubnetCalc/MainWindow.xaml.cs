@@ -29,66 +29,61 @@ namespace IpSubnetCalc
             InitializeComponent();
         }
 
-        private List<string> equalSubnetsHosts(string ipAddr,string prefix,string numberOf)
+        private List<string> equalSubnetsHosts(string ipAddr, string prefix, string numberOf)
         {
+            subnetStack.Clear();
+            powerOfTwo.Clear();
             List<string> decAddresses = new List<string>();
-            Dictionary<string,int> binAddresses = new Dictionary<string, int>();
             int hosts = int.Parse(numberOf);
-            string firstAddr = ipAddr;
-            string decAddr="";
             byte bits = 2;
-            while (hosts> Math.Pow(2, bits))
+            while (hosts > (Math.Pow(2, bits)-2))
             {
                 ++bits;
             }
             int mask = 32 - bits;
-            int index =mask;
-   
-            binAddresses.Add(firstAddr,mask);
+            int index = mask;
             int subNetworkBits = mask - int.Parse(prefix);
-            for (int i = 1; i < Math.Pow(2,subNetworkBits); i++)
-            {
-                
-                --index;
-                while (firstAddr[index] == '1')
-                {
-                    
-                    if (firstAddr[index] == '1')
-                    {
-                        int addr = Convert.ToInt32(Convert.ToChar(firstAddr[index]));
-                        int subnetMask = Convert.ToInt32(ToBinMask(mask)[index]);
-                        bool eredmeny = (addr == subnetMask);
-                        byte help = 0;
-                        if (eredmeny)
-                        {
-                            help = 1;
-                        }
-                        firstAddr = firstAddr.Remove(index, 1).Insert(index, Convert.ToString(help));
-                    }
-                    
-                }
-                binAddresses.Add(firstAddr.Remove(index, 1).Insert(index, "1"), (mask));
-                firstAddr = binAddresses.Keys.Last();
-                index = binAddresses.Values.Last();
 
-            }
-            foreach (var item in binAddresses)
+            for (int i = 0; i < Math.Pow(2, subNetworkBits); i++)
             {
-                decAddr = "";
-                string seged = item.Key;
-                for (int i = 0; i < 32; i += 8)
-                {
-                    string octet = seged.Substring(i, 8);
-                    decAddr += ToDec(octet) + ".";
-                }
-                decAddr = decAddr.TrimEnd('.');
-                decAddr += "/" + item.Value;
-                decAddresses.Add(decAddr);
+                powerOfTwo.Add(bits);
+                subnetStack.Add(hosts);
             }
-                //decAddresses.Add(VLSM(firstAddr).First());
-                //firstAddr = decAddresses.Last();
-                return decAddresses;
 
+            foreach (var item in VLSM(ipAddr))
+            {
+                decAddresses.Add(item);
+            }
+
+            return decAddresses;
+
+        }
+        private List<string> equalSubnetsSubnet(string ipAddr, string prefix, string numberOf)
+        {
+            subnetStack.Clear();
+            powerOfTwo.Clear();
+            List<string> decAddresses = new List<string>();
+            int subnets = int.Parse(numberOf);
+            byte bits = 2;
+            while (subnets > Math.Pow(2, bits))
+            {
+                ++bits;
+            }
+            int mask = int.Parse(prefix) + bits;
+            byte numberOfHostsByTwoPower = Convert.ToByte(32 - mask);
+            int hosts = Convert.ToInt32(Math.Pow(2,numberOfHostsByTwoPower));
+
+            for (int i = 0; i < Math.Pow(2, bits); i++)
+            {
+                powerOfTwo.Add(numberOfHostsByTwoPower);
+                subnetStack.Add(hosts);
+            }
+
+            foreach (var item in VLSM(ipAddr))
+            {
+                decAddresses.Add(item);
+            }
+            return decAddresses;
         }
         private List<string> VLSM(string ipAddr)
         {       
@@ -109,8 +104,8 @@ namespace IpSubnetCalc
                     {
                         int addr = Convert.ToInt32(Convert.ToChar(firstAddr[firstPrefix]));
                         int mask = Convert.ToInt32(ToBinMask(32 - powerOfTwo[i])[firstPrefix]);
-                        int eredmeny = addr ^ mask;
-                        firstAddr=firstAddr.Remove(firstPrefix, 1).Insert(firstPrefix, Convert.ToString(eredmeny));
+                        int value = addr ^ mask;
+                        firstAddr=firstAddr.Remove(firstPrefix, 1).Insert(firstPrefix, Convert.ToString(value));
                     }
                     --firstPrefix;
                 }
@@ -129,9 +124,8 @@ namespace IpSubnetCalc
                     decAddr+=ToDec(octet)+".";
                 }
                 decAddr = decAddr.TrimEnd('.');
-                decAddr += "/"+item.Value;
+                decAddr += "/" + item.Value;// +" -> "+ToDecAddress(broadcast);
                 decAddresses.Add(decAddr);
-                //MessageBox.Show(decAddr);
 
             }
             return decAddresses;
@@ -239,6 +233,16 @@ namespace IpSubnetCalc
             }
             return outputAddress;
         }
+        private string ToDecAddress(int address)
+        {
+            string decAddr = "";
+            for (int i = 0; i < 32; i += 8)
+            {
+                string octet = address.ToString().Substring(i, 8);
+                decAddr += ToDec(octet) + ".";
+            }
+            return decAddr;
+        }
         private void SelectRow(object sender, RoutedEventArgs e)
         {
             if (currSelected != null)
@@ -259,7 +263,8 @@ namespace IpSubnetCalc
         }
         private void CalculateBtn_Click(object sender, RoutedEventArgs e)
         {
-            outPutPanel.Children.Clear();
+           
+            outPutPanel.Items.Clear();
             ipAddress = ipAddressTextBox.Text;
             if (vlsmRadioBtn.IsChecked==true)
             {
@@ -270,7 +275,7 @@ namespace IpSubnetCalc
                     StackPanel row = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(4) };
                     row.Children.Add(new Label() { Content = item });
                     row.MouseLeftButtonDown += SelectRow;
-                    outPutPanel.Children.Add(row);
+                    outPutPanel.Items.Add(row);
                 }
             }
             else
@@ -282,13 +287,19 @@ namespace IpSubnetCalc
                         StackPanel row = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(4) };
                         row.Children.Add(new Label() { Content = item });
                         row.MouseLeftButtonDown += SelectRow;
-                        outPutPanel.Children.Add(row);
+                        outPutPanel.Items.Add(row);
                     }
                    
                 }
                 else
                 {
-                        
+                    foreach (var item in equalSubnetsSubnet(ToBinAddress(ipAddress), netmaskPrefix.Text, numberOf.Text))
+                    {
+                        StackPanel row = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(4) };
+                        row.Children.Add(new Label() { Content = item });
+                        row.MouseLeftButtonDown += SelectRow;
+                        outPutPanel.Items.Add(row);
+                    }
                 }
             }
 
