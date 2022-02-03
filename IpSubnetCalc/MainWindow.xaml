@@ -29,7 +29,7 @@
         <DockPanel Grid.Row="0" Grid.Column="1"/>
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="0,0,0,-29">
             <DockPanel Margin="67,0,-67,0" Height="30">
-                <Label Content="Ip address" />
+                <Label Content="IP address" />
                 <TextBox Width="200"  Name="ipAddressTextBox"/>
                 <Label Content="/" Visibility="Hidden" x:Name="prefixLbl"/>
                 <TextBox Width="40" Name="netmaskPrefix" Margin="-150,0,10,0" Visibility="Hidden"/>

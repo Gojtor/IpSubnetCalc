@@ -153,7 +153,7 @@ namespace IpSubnetCalc
             foreach (var item in subnetStack)
             {
                 bits = 2;
-                while (item > Math.Pow(2, bits))
+                while (item > (Math.Pow(2, bits)-2))
                 {
                     ++bits;
                 }
