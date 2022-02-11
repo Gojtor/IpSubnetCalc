@@ -221,15 +221,19 @@ namespace IpSubnetCalc
             {
                 try
                 {
-                    int.Parse(octetValues[i]);
+                    int helper = int.Parse(octetValues[i]);
+                    if (helper>255)
+                    {
+                        throw new System.Exception();
+                    }
                 }
-                catch (FormatException e)
+                catch (Exception)
                 {
-                    //MessageBox.Show("Rósz ip cim");
                     rosszIp hiba = new rosszIp();
                     hiba.ShowDialog();
                     Environment.Exit(0);
                 }
+
             }
             string[] addressInBin = new string[octetValues.Length];
             string outputAddress = "";
