@@ -133,7 +133,7 @@ namespace IpSubnetCalc
         private void ReadInSubnets()
         {
             subnetStack.Clear();
-            foreach (StackPanel item in SubnetStack.Children)
+            foreach (StackPanel item in SubnetStack.Items)
             {
                 subnetStack.Add(int.Parse((item.Children[1] as TextBox).Text));
                 // MessageBox.Show((item.Children[1] as TextBox).Text);
@@ -217,6 +217,20 @@ namespace IpSubnetCalc
         private string ToBinAddress(string address)
         {
             string[] octetValues = address.Split('.');
+            for (int i = 0; i < octetValues.Length; i++)
+            {
+                try
+                {
+                    int.Parse(octetValues[i]);
+                }
+                catch (FormatException e)
+                {
+                    //MessageBox.Show("Rósz ip cim");
+                    rosszIp hiba = new rosszIp();
+                    hiba.ShowDialog();
+                    Environment.Exit(0);
+                }
+            }
             string[] addressInBin = new string[octetValues.Length];
             string outputAddress = "";
             for (int i = 0; i < octetValues.Length; i++)
@@ -258,7 +272,7 @@ namespace IpSubnetCalc
             row.Children.Add(new Label() { Content = $"Number of users:" });
             row.Children.Add(new TextBox() { Width = 120 });
             row.MouseLeftButtonDown += SelectRow;
-            SubnetStack.Children.Add(row);
+            SubnetStack.Items.Add(row);
            
         }
         private void CalculateBtn_Click(object sender, RoutedEventArgs e)
@@ -311,7 +325,7 @@ namespace IpSubnetCalc
         {
             if (currSelected != null)
             {
-                SubnetStack.Children.Remove(currSelected);
+                SubnetStack.Items.Remove(currSelected);
             }
         }
 
