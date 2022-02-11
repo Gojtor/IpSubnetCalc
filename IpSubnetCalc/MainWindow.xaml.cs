@@ -34,7 +34,17 @@ namespace IpSubnetCalc
             subnetStack.Clear();
             powerOfTwo.Clear();
             List<string> decAddresses = new List<string>();
-            int hosts = int.Parse(numberOf);
+            int hosts = 0; 
+            try
+            {
+                hosts = int.Parse(numberOf);
+            }
+            catch (Exception)
+            {
+                rosszIp hiba = new rosszIp();
+                hiba.ShowDialog();
+                Environment.Exit(0);
+            }
             byte bits = 2;
             while (hosts > (Math.Pow(2, bits)-2))
             {
@@ -63,7 +73,17 @@ namespace IpSubnetCalc
             subnetStack.Clear();
             powerOfTwo.Clear();
             List<string> decAddresses = new List<string>();
-            int subnets = int.Parse(numberOf);
+            int subnets=0;
+            try
+            {
+                subnets = int.Parse(numberOf);
+            }
+            catch (Exception)
+            {
+                rosszIp hiba = new rosszIp();
+                hiba.ShowDialog();
+                Environment.Exit(0);
+            }
             byte bits = 2;
             while (subnets > Math.Pow(2, bits))
             {
@@ -135,16 +155,22 @@ namespace IpSubnetCalc
             subnetStack.Clear();
             foreach (StackPanel item in SubnetStack.Items)
             {
+                try
+                {
+                    int.Parse((item.Children[1] as TextBox).Text);
+                }
+                catch (Exception)
+                {
+                    rosszIp hiba = new rosszIp();
+                    hiba.ShowDialog();
+                    Environment.Exit(0);
+                }
+            }
+            foreach (StackPanel item in SubnetStack.Items)
+            {
                 subnetStack.Add(int.Parse((item.Children[1] as TextBox).Text));
-                // MessageBox.Show((item.Children[1] as TextBox).Text);
             }
             subnetStack = subnetStack.OrderByDescending(x => x).ToList();
-            /*
-             foreach (var item in subnetStack)
-             {
-                 MessageBox.Show(item.ToString());
-             }
-            */
         }
         private void SubnetsInTwoPower()
         {
