@@ -15,15 +15,15 @@ using System.Windows.Shapes;
 
 namespace IpSubnetCalc
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private StackPanel currSelected = null;
         private List<int> subnetStack = new List<int>();
         private List<int> powerOfTwo = new List<int>();
         private string ipAddress = "";
+        public static bool wrongIpInput;
+        public static bool wrongSubnetBoxInput;
+        public static bool wrongMaskInput;
         public MainWindow()
         {
             InitializeComponent();
@@ -41,6 +41,7 @@ namespace IpSubnetCalc
             }
             catch (Exception)
             {
+                wrongSubnetBoxInput = true;
                 rosszIp hiba = new rosszIp();
                 hiba.ShowDialog();
                 Environment.Exit(0);
@@ -80,6 +81,7 @@ namespace IpSubnetCalc
             }
             catch (Exception)
             {
+                wrongSubnetBoxInput = true;
                 rosszIp hiba = new rosszIp();
                 hiba.ShowDialog();
                 Environment.Exit(0);
@@ -161,6 +163,7 @@ namespace IpSubnetCalc
                 }
                 catch (Exception)
                 {
+                    wrongSubnetBoxInput = true;
                     rosszIp hiba = new rosszIp();
                     hiba.ShowDialog();
                     Environment.Exit(0);
@@ -185,13 +188,6 @@ namespace IpSubnetCalc
                 }
                 powerOfTwo.Add(bits);
             }
-            /*
-            foreach(var item in powerOfTwo)
-            {
-                MessageBox.Show(item.ToString());
-            }
-            */
-
         }
         private string ToBin(int inputDec)
         {
@@ -255,6 +251,7 @@ namespace IpSubnetCalc
                 }
                 catch (Exception)
                 {
+                    wrongIpInput = true;
                     rosszIp hiba = new rosszIp();
                     hiba.ShowDialog();
                     Environment.Exit(0);

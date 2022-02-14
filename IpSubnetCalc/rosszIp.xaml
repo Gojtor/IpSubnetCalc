@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IpSubnetCalc"
         mc:Ignorable="d"
-        Title="rosszIp" Height="676px" Width="652px" ResizeMode="NoResize">
-    <Image x:Name="kep"></Image>
+        Title="wrongIp" Height="676px" Width="652px" ResizeMode="NoResize">
+    <Image x:Name="image"></Image>
 </Window>

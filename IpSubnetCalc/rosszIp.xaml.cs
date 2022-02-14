@@ -19,16 +19,32 @@ namespace IpSubnetCalc
     /// </summary>
     public partial class rosszIp : Window
     {
+        MainWindow main = new MainWindow();
         public rosszIp()
         {
             InitializeComponent();
             BitmapImage hibaBitmapKep = new BitmapImage();
             hibaBitmapKep.BeginInit();
             string startPath = Environment.CurrentDirectory;
-            hibaBitmapKep.UriSource = new Uri(startPath+"/Images/wrongIpAddressMan.png", UriKind.RelativeOrAbsolute);
-            hibaBitmapKep.DecodePixelWidth = 200;
+
+            if (MainWindow.wrongIpInput)
+            {
+                hibaBitmapKep.UriSource = new Uri(startPath+"/Images/wrongIpAddressMan.png", UriKind.RelativeOrAbsolute);
+            }
+            else if (MainWindow.wrongSubnetBoxInput)
+            {
+                hibaBitmapKep.UriSource = new Uri(startPath + "/Images/wrongSubnetMan.jpg", UriKind.RelativeOrAbsolute);
+            }
+            else if (MainWindow.wrongMaskInput)
+            {
+                hibaBitmapKep.UriSource = new Uri(startPath + "/Images/wrongIpAddressMan.png", UriKind.RelativeOrAbsolute);
+            }
+            else
+            {
+                hibaBitmapKep.UriSource = new Uri(startPath + "/Images/wrongIpAddressMan.png", UriKind.RelativeOrAbsolute);
+            }
             hibaBitmapKep.EndInit();
-            kep.Source = hibaBitmapKep;
+            image.Source = hibaBitmapKep;
         }
     }
 }
