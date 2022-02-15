@@ -28,6 +28,7 @@ namespace IpSubnetCalc
         {
             InitializeComponent();
         }
+        
 
         private List<string> equalSubnetsHosts(string ipAddr, string prefix, string numberOf)
         {
@@ -291,7 +292,6 @@ namespace IpSubnetCalc
                 currSelected.Background = Brushes.Transparent;
             }
             currSelected = (StackPanel)sender;
-            currSelected.Background = Brushes.LightGray;
         }
         private void AddSubnetBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -352,8 +352,9 @@ namespace IpSubnetCalc
         {
             if (currSelected != null)
             {
-                SubnetStack.Items.Remove(currSelected);
+                SubnetStack.Items.Remove(SubnetStack.SelectedItem);
             }
+            
         }
 
         private void vlsmRadioBtn_Checked(object sender, RoutedEventArgs e)

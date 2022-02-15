@@ -56,7 +56,13 @@
             </StackPanel>
         </StackPanel>
 
-        <ListBox Name="SubnetStack" Grid.Column="0" Grid.Row="1" Background="Gray" Margin="0,27,0,0"/>
+        <ListBox Name="SubnetStack" Grid.Column="0" Grid.Row="1" Background="Gray" Margin="0,27,0,0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" ></StackPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
         <ListBox Name="outPutPanel" Grid.Row="1" Grid.Column="1" Background="LightGray"/>
     </Grid>
 </Window>
